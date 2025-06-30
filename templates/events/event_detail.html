@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4 text-gray-800">{{ event.name }}</h1>
+    <p class="text-gray-600 mb-4">{{ event.description }}</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 mb-6">
+        <div>
+            <p><span class="font-semibold">Date:</span> {{ event.date|date:"F d, Y" }}</p>
+            <p><span class="font-semibold">Time:</span> {{ event.time|time:"h:i A" }}</p>
+            <p><span class="font-semibold">Location:</span> {{ event.location }}</p>
+            <p><span class="font-semibold">Category:</span> {{ event.category.name }}</p> 
+        </div>
+        <div>
+            <p><span class="font-semibold">Status:</span> {{ event.get_status_display }}</p>
+            <p><span class="font-semibold">Created At:</span> {{ event.created_at|date:"F d, Y H:i" }}</p>
+            <p><span class="font-semibold">Last Updated:</span> {{ event.updated_at|date:"F d, Y H:i" }}</p>
+        </div>
+    </div>
+
+    <h2 class="text-2xl font-semibold mb-3 text-gray-800">Participants ({{ event.participants.count }})</h2>
+    {% if event.participants.exists %}
+        <ul class="list-disc list-inside space-y-2 mb-6">
+            {% for participant in event.participants.all %} 
+                <li class="text-gray-700">{{ participant.name }} ({{ participant.email }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-gray-600 italic mb-6">No participants registered for this event yet.</p>
+    {% endif %}
+
+    <div class="flex justify-end space-x-3 mt-6">
+        <a href="{% url 'event-update' event.pk %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Edit Event</a>
+        <a href="{% url 'event-delete' event.pk %}" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Delete Event</a>
+        <a href="{% url 'event-list' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Back to List</a>
+    </div>
+</div>
+{% endblock %}

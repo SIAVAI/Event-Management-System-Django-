@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md mx-auto text-center">
+    <h2 class="text-2xl font-bold mb-4 text-red-600">{{ title }}</h2>
+    <p class="text-gray-700 mb-6">Are you sure you want to delete the category "<span class="font-semibold">{{ category.name }}</span>"?</p>
+    <p class="text-red-500 text-sm mb-6">This action cannot be undone and may affect associated events!</p>
+
+    <form method="post" class="space-y-4">
+        {% csrf_token %}
+        <button type="submit" class="w-full bg-red-600 text-white p-3 rounded-lg font-semibold hover:bg-red-700 transition duration-200">
+            Confirm Delete
+        </button>
+        <a href="{% url 'category-list' %}" class="block w-full bg-gray-300 text-gray-800 p-3 rounded-lg font-semibold hover:bg-gray-400 transition duration-200">
+            Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}
